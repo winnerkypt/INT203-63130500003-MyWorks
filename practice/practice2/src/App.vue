@@ -1,21 +1,27 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+import { ref } from 'vue';
+const lists = ref()
 
-<template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
-</template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+function addNote() {
+  if (lists.value != null && lists.value != "") {
+    document.getElementById("list").insertAdjacentHTML("beforeend", "<li>" + lists.value + "</li>")
+  }
 }
+</script>
+ 
+<template>
+  <div v-show="lists" >
+     Filter Note :
+    <input type="text" id="filter"/>
+  </div>
+  <ul id="list"></ul>
+
+  <p>
+    New Note :
+    <input type="text" v-model="lists" />
+    <button @click="addNote">Add Note</button>
+  </p>
+</template>
+ 
+<style>
 </style>

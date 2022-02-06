@@ -1,4 +1,4 @@
-[12:40 PM] UMAPORN SUPASITTHIMETHEE
+
 <script setup>import { ref } from 'vue'
 const base = 4
 const height = 2
