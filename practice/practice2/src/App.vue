@@ -1,20 +1,46 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 const lists = ref()
+const filter = ref()
 
-function addNote() {
-  if (lists.value != null && lists.value != "") {
-    document.getElementById("list").insertAdjacentHTML("beforeend", "<li>" + lists.value + "</li>")
+
+function search(){
+ 
+  const w = document.getElementsByTagName("li")
+   
+  for (let index = 0; index < w.length; index++) {
+
+    let y = w[index].textContent
+    if (y.indexOf(filter.value) > -1) {
+      w[index].style.display = ''
+    } else {
+      w[index].style.display = "none"
+    }
   }
 }
+function addNote() {
+  if (lists.value != null && lists.value != "") {
+    // document.getElementById("list").insertAdjacentHTML("beforeend", "<li>" + lists.value + "</li>")
+    const a = document.getElementById("list")
+    const b = document.createElement("li")
+    const c = document.createTextNode(lists.value)
+    a.appendChild(b)
+    b.appendChild(c)
+  }
+}
+// const search = computed(() => 
+
+
+
+
 </script>
  
 <template>
-  <div v-show="lists" >
-     Filter Note :
-    <input type="text" id="filter"/>
+  <div>
+    Filter Note :
+    <input type="text" id="filter" v-model="filter" @keyup="search"/>
+    <ul id="list"></ul>
   </div>
-  <ul id="list"></ul>
 
   <p>
     New Note :
