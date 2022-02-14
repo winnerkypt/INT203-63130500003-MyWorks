@@ -1,40 +1,28 @@
 <script setup>
-import { ref} from 'vue';
-const lists = ref()
-const filter = ref()
-function search(){
-  const w = document.getElementsByTagName("li")
-  for (let index = 0; index < w.length; index++) {
-    let y = w[index].textContent
-    if (y.indexOf(filter.value) > -1) {
-      w[index].style.display = ''
-    } else {
-      w[index].style.display = "none"
-    }
-  }
-}
+import { ref, computed } from 'vue'
+const newNotes = ref('');
+const noteArr = ref([])
+const filter = ref('')
+const filterNotes = computed(() => noteArr.value.filter((note) =>
+  note.includes(filter.value)
+))
 function addNote() {
-  if (lists.value != null && lists.value != "") {
-    const a = document.getElementById("list")
-    const b = document.createElement("li")
-    const c = document.createTextNode(lists.value)
-    a.appendChild(b)
-    b.appendChild(c)
-  }
+  noteArr.value.push(newNotes.value)
 }
+
 </script>
  
 <template>
   <div>
-    Filter Note :
-    <input type="text" id="filter" v-model="filter" @keyup="search"/>
-    <ul id="list"></ul>
+    filter note :
+    <input type="text" v-model="filter"/>
+    <ul>
+      <li v-for="list in filterNotes">{{ list }}</li>
+    </ul>add new note :
+    <input type="text" v-model="newNotes" />
+    <button @click="addNote">add note</button>
   </div>
-  <p>
-    New Note :
-    <input type="text" v-model="lists" />
-    <button @click="addNote">Add Note</button>
-  </p>
 </template>
+ 
 <style>
 </style>
