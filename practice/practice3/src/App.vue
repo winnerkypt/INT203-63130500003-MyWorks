@@ -1,60 +1,37 @@
 <script setup>
 import { ref } from 'vue'
 const randNumbers = ref([])
-const myName = '63130500003 Kanyapat Wittayamaitkul'
-const click = ref(false)
-const num = ref('')
-const i = [0,1,2,3,4,5,6,7,8]
 // generates random number in range (1-99)
 const generateNumber = () => {
   let duplicate = false
   const rand = Math.floor(Math.random() * 99 + 1)
   duplicate = randNumbers.value.some((randNumber) => randNumber === rand)
   duplicate ? generateNumber() : randNumbers.value.push(rand)
-  callClick();
-}
-function callClick() {
-  click.value = true
-}
-const useNum = ref(false)
-function addNum(){
- num.value = randNumbers.value[randNumbers.value.length-1]
- useNum.value = true
 }
 </script>
 
 <template>
   <div class="top-container">
-    <h3>{{ myName }}</h3>
     <div class="action-button">
-      <button @click="generateNumber">Generate New Number</button>
+      <button>Generate New Number</button>
       <button>Reset</button>
     </div>
     <div class="error-message">
       <!-- show error message when a user adding the same number in the bingo sheet -->
     </div>
-    <div class="grid-container" >
-      <div class="grid-item" v-for="id in i" :key="id">
-        <button v-show="click" @click="addNum" :class="{ unShow :useNum }">Add number</button>
-        {{ num }}
+    <div class="grid-container">
+      <div class="grid-item">
+        <!-- show bingo 3 rows x 3 cols here -->
+      
       </div>
     </div>
     <div class="generate-number">
       <!-- show the list of generated number here -->
-      <ul v-for="num, index in randNumbers" :key="index" :class="{ decor :useNum }">
-      Generate Number #{{ index + 1 }} : ' {{ num }}'</ul>
     </div>
   </div>
 </template>
 
 <style scoped>
-.decor{
-  color : red;
-text-decoration: line-through; 
-}
-.unShow{
-  display:none;
-}
 .top-container {
   width: 330px;
 }

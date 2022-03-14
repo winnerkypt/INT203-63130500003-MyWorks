@@ -35,7 +35,7 @@ function addNum(){
     </div>
     <div class="grid-container" >
       <div class="grid-item" v-for="id in i" :key="id">
-        <button v-show="click" @click="addNum" :class="{ unShow :useNum }">Add number</button>
+        <button v-show="click" @click="addNum(id)" :class="{ unShow :useNum }">Add number</button>
         {{ num }}
       </div>
     </div>
