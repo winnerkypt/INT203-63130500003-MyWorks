@@ -29,22 +29,22 @@ const removeNote = async (deleteNoteId) => { //deleteNoteId รับค่า�
 
   } else console.log('error, cannot delete')
 }
-
-const createNewNote = async (newNoteDetail) => {
+                              //อันนี้เป็นโน้ตจาก ui เลย
+const createNewNote = async (newNoteDetail) => { 
   //res เก็บ response obj
   const res = await fetch(`http://localhost:5000/notes`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
     },
-    body: JSON.stringify({
-      NoteDetail: newNoteDetail
+    body: JSON.stringify({  //เปลี่ยน js obj เป็น JSON
+      noteDetail: newNoteDetail
     })
   })
 
   if (res.status === 201) {
     //เอาค่าใน json มาแสดงหน้าเว็บ
-    const addedNotes = await res.json() //เรียก obj ที่พึ่งเพิ่ม
+    const addedNotes = await res.json() //เรียก obj ที่พึ่งเพิ่ม เอาจาก backend 
     notes.value.push(addedNotes)
     console.log('added seccessfully')
   } else {
@@ -58,12 +58,46 @@ const toEditingMode = (editNote) => {
   console.log(editingNote.value)
 }
 
+const editNote = async (newNote) => {
+  const res = await fetch(`http://localhost:5000/notes/${newNote.id}`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      noteDetail: newNote.noteDetail
+    })
+  })
+  if (res.status === 200) {
+    const modifyData = await res.json()
+    console.log(modifyData.id)
+    notes.value = notes.value.map((note) =>
+      note.id === modifyData.id
+        ? { ...note, noteDetail: modifyData.noteDetail } //สร้าง obj ใหม่ โดยใช้ note เดิม
+        : note
+    )
+    console.log('updated successfully')
+  } else {
+    console.log('error, cannot update')
+  }
+}
+
 </script>
  
 <template>
 <div>
-  <CreateEditNote @createNote="createNewNote"  :curruntNote="editingNote"/>
-  <Note :notes="notes" @deleteNote="removeNote" @editNote="toEditingMode" />
+ <div>
+    <CreateEditNote
+      @createNote="createNewNote"
+      :currentNote="editingNote"
+      @updateNote="editNote"
+    />
+    <Note
+      :noteLists="notes"
+      @deleteNote="removeNote"
+      @editNote="toEditingMode"
+    />
+  </div>
   <!-- notes ที่ได้มาจาก backend ได้ผลเป็น real time -->
   </div>
 </template>
